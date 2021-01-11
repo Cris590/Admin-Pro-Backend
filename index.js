@@ -21,6 +21,9 @@ const app = express();
 //Configurar CORS
 app.use(cors());
 
+//Lectura y parseo del body (Para leer los datos del frontEnd por peticion POST)
+app.use(express.json()); // Se coloca ants de las rutas para que permita leer antes de todo
+
 //Base de datos
 dbConection(); // Con eso se hace la coneccion con la base de datos
 
@@ -28,13 +31,11 @@ console.log(process.env); // Establece las variables de entorno del .env en todo
 
 //Rutas
 
-app.get('/', (req, res) => { // La solicitud a la ruta raiz "/" ... Tiene 2 argumentos, el req qeu corresponde al que hace la solicitus y el res, que correr=sponde a lo que responde el servidor
-    res.json({
-        ok: "true",
-        msg: "Hola mundo"
-    })
+// Cualquier peticion a la URL, en este caso api/usuarios/ va a ser respondido por el archivo de segundo argumento ... routes/usuarios
+app.use('/api/usuarios', require('./routes/usuariosRoutes'));
 
-});
+app.use('/api/login', require('./routes/authRoute'))
+
 
 
 app.listen(process.env.PORT, () => {
