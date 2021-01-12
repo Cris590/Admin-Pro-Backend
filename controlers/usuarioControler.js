@@ -7,21 +7,47 @@ const { generarJWT } = require('../helpers/jwt');
 //Se pone el controlador dentro de una constante para poder exportarlo y llamarlo 
 const getUsuarios = async(req, res) => { // La solicitud a la ruta raiz "/" ... Tiene 2 argumentos, el req qeu corresponde al que hace la solicitus y el res, que correr=sponde a lo que responde el servidor
 
-    const usuario = await Usuario.find({}, 'nombre email role google'); //{}, 'nombre email role google' Para hacer un filtro para que el objeto solo devuelva las variables puestas
+    const desde = Number(req.query.desde) || 0; // Query param es un argumento opcional a enviar, se va a utilizar para la paginacion, si no hay numero o argumento entonces regresa un cero
+    console.log(desde);
+
+    ////////////////////////////////////
+    //LO VAMOS A HACER TODO EN UN SOLA// 
+    ////////////////////////////////////
+
+
+    //const usuario = await Usuario.find({}, 'nombre email role google'). //{}, 'nombre email role google' Para hacer un filtro para que el objeto solo devuelva las variables puestas
+    //skip(desde). //Se salta todos los registros anteriores a desde
+    //limit(5); // Cuentos argumentos va a ver, es decir permite ver paginas desde: (desde) hasta (desde+1)
+
+    //const total = await Usuario.count(); //Guarda el total de registros 
+
+    /////////////////////////////////// No es muy practica, entonces lo hacemos de la forma que esta abajo
+
+    const [usuario, total] = await Promise.all([ //Ambas promesas se hacen de manera simultanea y cuando ambas se terminan salen del "ciclo"
+        //Promesa 1 -> usuario
+        Usuario
+        .find({}, ' img nombre email role google ') //Asigna estas variables a usuario  
+        .skip(desde) //Se salta todos los registros anteriores a desde
+        .limit(5),
+
+        //Promesa 2 -> total
+        Usuario.countDocuments()
+    ])
+
+
+
+
 
     res.json({
         ok: "true",
         usuario,
-        msg: 'Usuarios registrados',
-        uid: req.uid //Este valor viene del valida-jwt.js
+        total
     });
 }
 
 const crearUsuarios = async(req, res) => { // La solicitud a la ruta raiz "/" ... Tiene 2 argumentos, el req qeu corresponde al que hace la solicitus y el res, que correr=sponde a lo que responde el servidor
 
     const { email, password } = req.body; // El asigna por medio de los nombres valor a las variables de la izquierda
-
-
 
 
     try {
@@ -77,7 +103,6 @@ const actualizarUsuario = async(req, res) => {
     //TODO: validar token y comprobar si el usuaaio es correcto
 
     const uid = req.params.id; // El id que instroduce el usario al hacer la peticion
-    console.log(uid);
     try {
 
         const usuarioDB = await Usuario.findById(uid);
@@ -92,7 +117,7 @@ const actualizarUsuario = async(req, res) => {
 
         //ACTUALIZACIONES DE LA BASE DE DATOS
 
-        const { password, google, email, ...campos } = req.body; //Con esta desestructuracion se almacena las variables password, google  y email aparte ...y el camp almacea el resto del body
+        const { password, google, email, ...campos } = req.body; //Con esta desestructuracion se almacena las variables password, google  y email aparte ...y el campos almacea el resto del body
 
         if (usuarioDB.email !== email) { // Al no cambiar el email toca removerlo,de otra forma chocaria con la validadcion del email unico
 
@@ -136,6 +161,7 @@ const actualizarUsuario = async(req, res) => {
 }
 
 const borrarUsuario = async(req, res) => {
+
     const uid = req.params.id;
 
     try {
@@ -147,7 +173,7 @@ const borrarUsuario = async(req, res) => {
             return res.status(404).json({
                 ok: false,
                 msg: "No existe un usuario por ese ID"
-            })
+            });
         }
 
         await Usuario.findByIdAndDelete(uid);
@@ -155,14 +181,14 @@ const borrarUsuario = async(req, res) => {
         res.json({
             ok: true,
             msg: 'Usuario eliminado'
-        })
+        });
 
     } catch (error) {
         console.log(error);
         json.status(500).json({
             ok: false,
             msg: 'Error inesperado'
-        })
+        });
     }
 }
 

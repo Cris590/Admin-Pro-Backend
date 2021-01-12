@@ -22,13 +22,14 @@ router.post('/', // Si se manda 3 argumentos, el segundo argumento corresponde a
     crearUsuarios);
 
 
-router.put('/:id', [ // Pongo los midelware de validacion aca pporque son obligatorios para crear nuevo usuario, se pone el : para indicar que es una variable
+router.put('/:id', [
+        validarJWT,
+        // Pongo los midelware de validacion aca pporque son obligatorios para crear nuevo usuario, se pone el : para indicar que es una variable
         check('nombre', 'el nombre es obligatorio').not().isEmpty(), // Checa el campo nombre(el cual sabe por las validaciones ya hechas)... este no debe estar vacio
         check('email', 'el correo es obligatorio').isEmail(),
         check('role', 'el role es obligatorio').not().isEmpty(),
 
         validarCampos, // Se tiene que hacer los checks para que se creen los errores para poder evaluarlos
-        validarJWT
     ],
     actualizarUsuario); // se manda el id para que con este se pueda modificar la info    
 

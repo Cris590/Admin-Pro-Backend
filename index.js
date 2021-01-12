@@ -33,8 +33,16 @@ console.log(process.env); // Establece las variables de entorno del .env en todo
 
 // Cualquier peticion a la URL, en este caso api/usuarios/ va a ser respondido por el archivo de segundo argumento ... routes/usuarios
 app.use('/api/usuarios', require('./routes/usuariosRoutes'));
+app.use('/api/hospitales', require('./routes/hospitalesRoute'));
+app.use('/api/medicos', require('./routes/medicosRoute'));
+app.use('/api/todo', require('./routes/busquedaRoute'));
+app.use('/api/upload', require('./routes/uploadRoute'));
 
-app.use('/api/login', require('./routes/authRoute'))
+
+
+app.use('/api/login', require('./routes/authRoute'));
+
+
 
 
 
