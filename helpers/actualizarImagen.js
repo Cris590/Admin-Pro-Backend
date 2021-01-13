@@ -19,10 +19,10 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             const medico = await Medico.findById(id);
             if (!medico) {
                 console.log('No se encontro medico por ID');
-                var path = `./uploads/${ tipo }/${ nombreArchivo }`;
+                var path1 = `./uploads/${ tipo }/${ nombreArchivo }`;
 
-                if (fs.existsSync(path)) {
-                    fs.unlinkSync(path);
+                if (fs.existsSync(path1)) {
+                    fs.unlinkSync(path1);
                 }
                 return false;
 
@@ -41,10 +41,10 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             const hospital = await Hospital.findById(id);
             if (!hospital) {
                 console.log('No se encontro hospital por ID');
-                var path = `./uploads/${ tipo }/${ nombreArchivo }`;
+                var path2 = `./uploads/${ tipo }/${ nombreArchivo }`;
 
-                if (fs.existsSync(path)) {
-                    fs.unlinkSync(path);
+                if (fs.existsSync(path2)) {
+                    fs.unlinkSync(path2);
                 }
                 return false;
             }
@@ -65,10 +65,10 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             if (!usuario) {
                 console.log('No se encontro usuario por ID');
 
-                var path = `./uploads/${ tipo }/${ nombreArchivo }`;
+                var path3 = `./uploads/${ tipo }/${ nombreArchivo }`;
 
-                if (fs.existsSync(path)) {
-                    fs.unlinkSync(path);
+                if (fs.existsSync(path3)) {
+                    fs.unlinkSync(path3);
                 }
                 return false;
             }

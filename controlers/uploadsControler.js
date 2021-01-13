@@ -99,12 +99,10 @@ const retornaImagen = (req, res) => {
 
     const pathImg = Path.join(__dirname, `../uploads/${tipo}/${foto}`); // Crea una constante con el path de la imagen.
 
-    res.sendFile(pathImg); // enviar la imagen a travez de express para que pueda ser obtenida por el usuarios
 
     //Imagen por defecto
-
-    if (fs.existsSync(path)) { // Si existe una imgen correspondiente al medico con el id entonces la elimina para subir una nueva
-        fs.unlinkSync(path);
+    if (fs.existsSync(pathImg)) { // Si existe una imgen correspondiente al medico con el id entonces la elimina para subir una nueva
+        res.sendFile(pathImg);
     } else {
         const pathImg = Path.join(__dirname, `../uploads/no-img.jpg`);
         res.sendFile(pathImg);

@@ -27,6 +27,9 @@ app.use(express.json()); // Se coloca ants de las rutas para que permita leer an
 //Base de datos
 dbConection(); // Con eso se hace la coneccion con la base de datos
 
+//Directorio publico
+app.use(express.static('public')); // El parametro es el nnombre de la carpeta, ubicado en la raiz
+
 console.log(process.env); // Establece las variables de entorno del .env en todo el proyecto de node
 
 //Rutas
@@ -37,7 +40,6 @@ app.use('/api/hospitales', require('./routes/hospitalesRoute'));
 app.use('/api/medicos', require('./routes/medicosRoute'));
 app.use('/api/todo', require('./routes/busquedaRoute'));
 app.use('/api/upload', require('./routes/uploadRoute'));
-
 
 
 app.use('/api/login', require('./routes/authRoute'));
