@@ -23,10 +23,14 @@ router.post('/', // Si se manda 3 argumentos, el segundo argumento corresponde a
     crearHospital);
 
 
-router.put('/:id', [],
+router.put('/:id', [
+        validarJWT,
+        check('nombre', 'El nombre del hospital es obligatorio').not().isEmpty(),
+        validarCampos
+    ],
     actualizarHospital); // se manda el id para que con este se pueda modificar la info    
 
-router.delete('/:id', [], borrarHospital);
+router.delete('/:id', validarJWT, borrarHospital);
 
 
 

@@ -24,10 +24,15 @@ router.post('/', // Si se manda 3 argumentos, el segundo argumento corresponde a
     crearMedico);
 
 
-router.put('/:id', [],
+router.put('/:id', [
+        validarJWT,
+        check('nombre', 'El nombre del medico es obligatorio').not().isEmpty(),
+        check('hospital', 'El hospital id debe ser valido').isMongoId(), // Para verificar que cumpla con las coniciones, minimo que sea de la longitud requerida
+        validarCampos
+    ],
     actualizarMedico); // se manda el id para que con este se pueda modificar la info    
 
-router.delete('/:id', [], borrarMedico);
+router.delete('/:id', borrarMedico);
 
 
 
