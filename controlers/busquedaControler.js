@@ -49,7 +49,7 @@ const getDocumentos = async(req, res = response) => {
             break;
 
         case 'usuarios':
-            data = await Usuario.find({ nombre: reqExp }).populate('usuario', 'nombre img');
+            data = await Usuario.find({ nombre: reqExp });
             break;
 
 

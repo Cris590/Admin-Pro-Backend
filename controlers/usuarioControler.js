@@ -131,7 +131,14 @@ const actualizarUsuario = async(req, res) => {
         }
 
         //Aca le regresa el dato del email a campos para que lo inyecte en el update
-        campos.email = email;
+        if (!usuarioDB.google) {
+            campos.email = email;
+        } else if (usuarioDB.email !== email) {
+            return res.status(200).json({
+                ok: false,
+                msg: 'Usuarios de google no pueden cambiar el correo'
+            })
+        }
 
         //Lo que no se deberia actualizar...En la desestructuracion de campos se hace esto
         //delete campos.password; // Por si acaso se borra lo que no se necesita ... se puede hacer esto con cualquier cosa 

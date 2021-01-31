@@ -14,6 +14,6 @@ router.use(expressFileUpload());
 
 router.put('/:tipo/:id', validarJWT, fileUpload); // se manda el id para que con este se pueda modificar la info   
 
-router.get('/:tipo/:foto', retornaImagen)
+router.get('/:tipo/:foto', retornaImagen);
 
 module.exports = router;
